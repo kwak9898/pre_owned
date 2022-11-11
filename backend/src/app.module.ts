@@ -6,6 +6,7 @@ import { MembersService } from './domains/members/members.service';
 import { MembersModule } from './domains/members/members.module';
 import * as Joi from '@hapi/joi';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
       }),
     }),
     MembersModule,
+    DatabaseModule,
   ],
   controllers: [AppController, MembersController],
   providers: [AppService, MembersService],
