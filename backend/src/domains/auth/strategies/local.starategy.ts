@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-local';
 import { AuthService } from '../auth.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
-  constructor(private readonly authService: AuthService) {
+  constructor(private authService: AuthService) {
     super({
       usernameField: 'email',
     });
@@ -18,7 +18,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     const member = await this.authService.validateMember(email, password);
 
     if (!member) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("위잉");
     }
     return member;
   }

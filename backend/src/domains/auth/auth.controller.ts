@@ -11,19 +11,19 @@ import { SignInResponseDto } from './dto/signInResponse.dto';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private readonly membersService: MembersService,
+    private authService: AuthService,
+    private membersService: MembersService,
   ) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('/signin')
-  async signIn(@CurrentMamber() memeber: Members): Promise<SignInResponseDto> {
-    const memberId = memeber.memberId;
-    const accessToken = this.authService.createAccessToken(memberId);
-    const refreshToken = this.authService.createRefreshToken(memberId);
+  async signIn(@CurrentMamber() member: Members): Promise<SignInResponseDto> {
+    const email = member.email;
+    const accessToken = this.authService.createAccessToken(email);
+    const refreshToken = this.authService.createRefreshToken(email);
 
-    await this.membersService.setCurrentRefreshToken(refreshToken, memberId);
+    await this.membersService.setCurrentRefreshToken(refreshToken, email);
 
     return { accessToken, refreshToken };
   }

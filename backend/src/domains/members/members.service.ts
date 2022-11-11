@@ -9,7 +9,7 @@ import { MembersRepository } from './members.repository';
 export class MembersService {
   constructor(
     @InjectRepository(MembersRepository)
-    private readonly membersRepository: MembersRepository,
+    private membersRepository: MembersRepository,
   ) {}
 
   /**
@@ -33,10 +33,10 @@ export class MembersService {
   /**
    * Refresh Token 저장
    */
-  setCurrentRefreshToken(refreshToken: string, memberId: number) {
+  setCurrentRefreshToken(refreshToken: string, email: string) {
     return this.membersRepository.setCurrentRefreshToken(
       refreshToken,
-      memberId,
+      email,
     );
   }
 

@@ -10,8 +10,8 @@ import { Members } from 'src/entities/members.entity';
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     @InjectRepository(MembersRepository)
-    private configService: ConfigService,
     private membersRepository: MembersRepository,
+    private configService: ConfigService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

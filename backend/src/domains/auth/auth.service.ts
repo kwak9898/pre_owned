@@ -1,22 +1,23 @@
-import { expression } from '@hapi/joi';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { MembersService } from '../members/members.service';
+import * as bcrypt from "bcrypt";
+import { AUTH_EXCEPTION } from "../../exception/authErrorCode";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly membersService: MembersService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private membersService: MembersService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   /**
    * Access Token 발급
    */
-  createAccessToken(memberId: number) {
-    const payload = { memberId };
+  createAccessToken(email: string) {
+    const payload = { email };
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: `${this.configService.get(
@@ -28,8 +29,8 @@ export class AuthService {
   /**
    * Refresh Token 발급
    */
-  createRefreshToken(memberId: number) {
-    const payload = { memberId };
+  createRefreshToken(email: string) {
+    const payload = { email };
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
       expiresIn: `${this.configService.get(
@@ -41,12 +42,20 @@ export class AuthService {
   /**
    * 비밀번호 유효성 검사
    */
-  async validateMember(email: string, password: string) {
+  async validateMember(email: string, plainTextPassword: string) {
     const member = await this.membersService.findOneMember(email);
-    if (member && member.password == password) {
-      const { password, ...result } = member;
-      return result;
+    await this.verifyPassword(plainTextPassword, member.password);
+    const { password, ...result } = member;
+    return result;
+  }
+
+  /**
+   * 비밀번호 일치 검사
+   */
+  private async verifyPassword(password: string, hashPassword: string) {
+    const isPasswordMatch = await bcrypt.compare(password, hashPassword);
+    if (!isPasswordMatch) {
+      throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_FAIL_VALIDATE);
     }
-    return null;
   }
 }

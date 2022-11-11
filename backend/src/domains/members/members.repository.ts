@@ -7,7 +7,7 @@ import { createMemberDto } from './dto/createMember.dto';
 
 @Injectable()
 export class MembersRepository extends Repository<Members> {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(private dataSource: DataSource) {
     super(Members, dataSource.createEntityManager());
   }
 
@@ -34,6 +34,10 @@ export class MembersRepository extends Repository<Members> {
       );
     }
 
+    if (existMember.memberName) {
+      throw new BadRequestException(MEMBER_EXCEPTION.MEMBER_CODE_EXIST);
+    }
+
     await member.hashPassword(password);
     const saveMember = await this.save(member);
     return saveMember;
@@ -50,8 +54,8 @@ export class MembersRepository extends Repository<Members> {
   /**
    * Refresh Token 저장
    */
-  async setCurrentRefreshToken(refreshToken: string, memberId: number) {
-    await this.update(memberId, { jwtToken: refreshToken });
+  async setCurrentRefreshToken(refreshToken: string, email: string) {
+    await this.update(email, { jwtToken: refreshToken });
   }
 
   /**

@@ -8,14 +8,16 @@ import {
 import { Members } from 'src/entities/members.entity';
 import { createMemberDto } from './dto/createMember.dto';
 import { MembersService } from './members.service';
+import { Public } from "../../decorators/skipAuth.decorator";
 
 @Controller('members')
 export class MembersController {
-  constructor(private readonly membersService: MembersService) {}
+  constructor(private membersService: MembersService) {}
 
   /**
    * 멤버 생성
    */
+  @Public()
   @Post('/signup')
   @HttpCode(200)
   createMember(
