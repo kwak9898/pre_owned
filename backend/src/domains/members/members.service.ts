@@ -11,6 +11,9 @@ export class MembersService {
     private readonly membersRepository: MembersRepository,
   ) {}
 
+  /**
+   * 유저 생성
+   */
   async createMember(createMemberDto: createMemberDto): Promise<Members> {
     return await this.membersRepository.createMember(createMemberDto);
   }
