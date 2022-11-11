@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Members } from 'src/entities/members.entity';
+import { AUTH_EXCEPTION } from 'src/exception/authErrorCode';
 import { MEMBER_EXCEPTION } from 'src/exception/memberErrorCode';
 import { DataSource, Repository } from 'typeorm';
 import { createMemberDto } from './dto/createMember.dto';
@@ -51,5 +52,18 @@ export class MembersRepository extends Repository<Members> {
    */
   async setCurrentRefreshToken(refreshToken: string, memberId: number) {
     await this.update(memberId, { jwtToken: refreshToken });
+  }
+
+  /**
+   * refresh Token 검사
+   */
+  async getUserIfRefreshTokenMatches(refreshToken: string, email: string) {
+    const memeber = await this.findOneByMember(email);
+
+    if (refreshToken == memeber.jwtToken) {
+      return memeber;
+    } else {
+      throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_NOT_EXIST_TOKEN);
+    }
   }
 }

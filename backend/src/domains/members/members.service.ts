@@ -39,4 +39,14 @@ export class MembersService {
       memberId,
     );
   }
+
+  /**
+   * refresh Token 검사
+   */
+  async getUserIfRefreshTokenMatches(refreshToken: string, email: string) {
+    return this.membersRepository.getUserIfRefreshTokenMatches(
+      refreshToken,
+      email,
+    );
+  }
 }
