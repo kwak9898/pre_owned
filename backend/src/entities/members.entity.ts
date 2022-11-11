@@ -1,5 +1,6 @@
 import { BaseEntitty } from 'src/domains/base/base.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity('members')
 export class Members extends BaseEntitty {
@@ -33,4 +34,8 @@ export class Members extends BaseEntitty {
     select: false,
   })
   password: string;
+
+  async hashPassword(password: string): Promise<void> {
+    this.password = await bcrypt.hash(password, 12);
+  }
 }
