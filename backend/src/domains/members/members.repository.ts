@@ -37,4 +37,19 @@ export class MembersRepository extends Repository<Members> {
     const saveMember = await this.save(member);
     return saveMember;
   }
+
+  /**
+   * 특정 멤버 조회
+   */
+  async findOneByMember(email: string): Promise<Members> {
+    const member = await this.findOne({ where: { email } });
+    return member;
+  }
+
+  /**
+   * Refresh Token 저장
+   */
+  async setCurrentRefreshToken(refreshToken: string, memberId: number) {
+    await this.update(memberId, { jwtToken: refreshToken });
+  }
 }
