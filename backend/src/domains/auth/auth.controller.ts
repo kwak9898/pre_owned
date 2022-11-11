@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 import { async } from 'rxjs';
-import { CurrentMamber } from 'src/dacorators/currentMember.decorator';
+import { CurrentMamber } from 'src/decorators/currentMember.decorator';
 import { Members } from 'src/entities/members.entity';
 import { LocalAuthGuard } from '../guard/localAuth.guard';
 import { MembersService } from '../members/members.service';
