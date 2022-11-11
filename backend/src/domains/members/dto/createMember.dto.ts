@@ -30,4 +30,11 @@ export class createMemberDto {
     message: '영문, 숫자, 특수문자의 혼합으로 설정해주세요.',
   })
   password: string;
+
+  @IsString()
+  @IsNotEmpty({ message: '비밀번호 확인란을 적어주세요.' })
+  @MinLength(4)
+  @MaxLength(20)
+  @Matches(/^[a-zA-Z0-9~!@#$%^&*]*$/)
+  confirmPassword: string;
 }
