@@ -11,7 +11,7 @@ export class MembersRepository extends Repository<Members> {
   }
 
   /**
-   * 유저 생성
+   * 멤버 생성
    */
   async createMember(createMemberDto: createMemberDto): Promise<Members> {
     const { email, memberName, password, confirmPassword } = createMemberDto;

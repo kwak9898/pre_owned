@@ -8,16 +8,16 @@ import {
 
 export class createMemberDto {
   @IsString()
-  @IsNotEmpty({ message: '이메일을 입력해주세요.' })
-  @MinLength(10)
+  @IsNotEmpty()
+  @MinLength(5)
   @MaxLength(30)
-  @Matches(/^[a-zA-Z0-9~!@#$%^&*]*$/, {
-    message: '이메일 형식으로 10자 이상 30자 이하로 작성해주세요.',
-  })
+  // @Matches(/^[a-zA-Z0-9~@]*$/, {
+  //   message: '이메일 형식으로 5자 이상 30자 이하로 작성해주세요.',
+  // })
   email: string;
 
   @IsString()
-  @IsNotEmpty({ message: '비밀번호를 입력해주세요.' })
+  @IsNotEmpty()
   @MinLength(3)
   @MaxLength(11)
   memberName: string;
@@ -32,7 +32,7 @@ export class createMemberDto {
   password: string;
 
   @IsString()
-  @IsNotEmpty({ message: '비밀번호 확인란을 적어주세요.' })
+  @IsNotEmpty()
   @MinLength(4)
   @MaxLength(20)
   @Matches(/^[a-zA-Z0-9~!@#$%^&*]*$/)

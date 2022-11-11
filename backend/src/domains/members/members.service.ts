@@ -12,9 +12,9 @@ export class MembersService {
   ) {}
 
   /**
-   * 유저 생성
+   * 멤버 생성
    */
-  async createMember(createMemberDto: createMemberDto): Promise<Members> {
-    return await this.membersRepository.createMember(createMemberDto);
+  createMember(createMemberDto: createMemberDto): Promise<Members> {
+    return this.membersRepository.createMember(createMemberDto);
   }
 }
