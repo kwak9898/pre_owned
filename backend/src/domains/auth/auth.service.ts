@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { MembersService } from '../members/members.service';
-import * as bcrypt from "bcrypt";
-import { AUTH_EXCEPTION } from "../../exception/authErrorCode";
+import * as bcrypt from 'bcrypt';
+import { AUTH_EXCEPTION } from '../../exception/authErrorCode';
 
 @Injectable()
 export class AuthService {
@@ -54,6 +54,7 @@ export class AuthService {
    */
   private async verifyPassword(password: string, hashPassword: string) {
     const isPasswordMatch = await bcrypt.compare(password, hashPassword);
+    console.log(isPasswordMatch);
     if (!isPasswordMatch) {
       throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_FAIL_VALIDATE);
     }
