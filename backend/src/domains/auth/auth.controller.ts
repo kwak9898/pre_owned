@@ -19,7 +19,6 @@ export class AuthController {
   @Post('/signin')
   @HttpCode(200)
   async signIn(@CurrentMember() member: Members): Promise<SignInResponseDto> {
-    console.log(member.email);
     const accessToken = this.authService.createAccessToken(member.email);
     const refreshToken = this.authService.createRefreshToken(member.email);
 

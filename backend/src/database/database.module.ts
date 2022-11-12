@@ -17,7 +17,6 @@ import { Members } from 'src/entities/members.entity';
         database: configService.get('DB_NAME'),
         entities: [Members],
         synchronize: true,
-        logging: true,
       }),
     }),
   ],
