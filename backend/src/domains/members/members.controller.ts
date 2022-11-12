@@ -1,14 +1,14 @@
 import {
   Body,
-  Controller,
-  HttpCode,
+  Controller, Get,
+  HttpCode, Param,
   Post,
-  ValidationPipe,
-} from '@nestjs/common';
+  ValidationPipe
+} from "@nestjs/common";
 import { Members } from 'src/entities/members.entity';
 import { createMemberDto } from './dto/createMember.dto';
 import { MembersService } from './members.service';
-import { Public } from "../../decorators/skipAuth.decorator";
+import { Public } from '../../decorators/skipAuth.decorator';
 
 @Controller('members')
 export class MembersController {
@@ -24,5 +24,14 @@ export class MembersController {
     @Body(ValidationPipe) createMemberDto: createMemberDto,
   ): Promise<Members> {
     return this.membersService.createMember(createMemberDto);
+  }
+
+  /**
+   * 특정 멤버 조회
+   */
+  @Public()
+  @Get(':email')
+  findOneMember(@Param('email') email: string): Promise<Members> {
+    return this.membersService.findOneMember(email);
   }
 }

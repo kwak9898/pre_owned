@@ -33,8 +33,8 @@ export class MembersService {
   /**
    * Refresh Token 저장
    */
-  setCurrentRefreshToken(refreshToken: string, email: string) {
-    return this.membersRepository.setCurrentRefreshToken(
+  async setCurrentRefreshToken(refreshToken: string, email: string) {
+    return await this.membersRepository.setCurrentRefreshToken(
       refreshToken,
       email,
     );

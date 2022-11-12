@@ -11,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     @InjectRepository(MembersRepository)
     private membersRepository: MembersRepository,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,7 +21,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(payload: any) {
     const { email } = payload;
-    const member: Members = await this.membersRepository.findOneByMember(email);
+    const member: Members = await this.membersRepository.findOne({
+      where: { email },
+    });
 
     if (!member) {
       throw new UnauthorizedException();

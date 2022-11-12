@@ -54,7 +54,6 @@ export class AuthService {
    */
   private async verifyPassword(password: string, hashPassword: string) {
     const isPasswordMatch = await bcrypt.compare(password, hashPassword);
-    console.log(isPasswordMatch);
     if (!isPasswordMatch) {
       throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_FAIL_VALIDATE);
     }

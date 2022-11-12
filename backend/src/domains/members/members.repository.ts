@@ -43,7 +43,10 @@ export class MembersRepository extends Repository<Members> {
    * 특정 멤버 조회
    */
   async findOneByMember(email: string): Promise<Members> {
-    const member = await this.findOne({ where: { email } });
+    const member = await this.findOne({
+      select: ['email', 'memberName', 'password', 'jwtToken'],
+      where: { email },
+    });
     return member;
   }
 
@@ -58,10 +61,10 @@ export class MembersRepository extends Repository<Members> {
    * refresh Token 검사
    */
   async getUserIfRefreshTokenMatches(refreshToken: string, email: string) {
-    const memeber = await this.findOneByMember(email);
+    const member = await this.findOneByMember(email);
 
-    if (refreshToken == memeber.jwtToken) {
-      return memeber;
+    if (refreshToken == member.jwtToken) {
+      return member;
     } else {
       throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_NOT_EXIST_TOKEN);
     }
