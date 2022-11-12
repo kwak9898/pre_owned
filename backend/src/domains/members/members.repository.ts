@@ -34,10 +34,6 @@ export class MembersRepository extends Repository<Members> {
       );
     }
 
-    if (existMember.memberName) {
-      throw new BadRequestException(MEMBER_EXCEPTION.MEMBER_CODE_EXIST);
-    }
-
     await member.hashPassword(password);
     const saveMember = await this.save(member);
     return saveMember;

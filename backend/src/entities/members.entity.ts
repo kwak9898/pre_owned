@@ -39,6 +39,7 @@ export class Members extends BaseEntitty {
     name: 'jwt_token',
     comment: 'jwt refresh token',
     type: 'varchar',
+    nullable: true,
   })
   jwtToken?: string;
 
