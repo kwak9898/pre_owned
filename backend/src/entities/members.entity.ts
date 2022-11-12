@@ -35,6 +35,14 @@ export class Members extends BaseEntitty {
   })
   password: string;
 
+  @Column({
+    name: 'jwt_token',
+    comment: 'jwt refresh token',
+    type: 'varchar',
+    nullable: true,
+  })
+  jwtToken?: string;
+
   async hashPassword(password: string): Promise<void> {
     this.password = await bcrypt.hash(password, 12);
   }

@@ -7,4 +7,8 @@ export const MEMBER_EXCEPTION = {
     code: 'MEMBER_CODE_PASSWORD_NOT_SAME',
     message: '비밀번호와 확인 비밀번호가 일치하지 않습니다.',
   },
+  MEMBER_CODE_NOT_FOUND: {
+    code: 'MEMBER_CODE_NOT_FOUND',
+    message: '해당 Member를 찾을 수 없습니다.',
+  },
 };

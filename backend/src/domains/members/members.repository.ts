@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Members } from 'src/entities/members.entity';
+import { AUTH_EXCEPTION } from 'src/exception/authErrorCode';
 import { MEMBER_EXCEPTION } from 'src/exception/memberErrorCode';
 import { DataSource, Repository } from 'typeorm';
 import { createMemberDto } from './dto/createMember.dto';
 
 @Injectable()
 export class MembersRepository extends Repository<Members> {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(private dataSource: DataSource) {
     super(Members, dataSource.createEntityManager());
   }
 
@@ -36,5 +37,40 @@ export class MembersRepository extends Repository<Members> {
     await member.hashPassword(password);
     const saveMember = await this.save(member);
     return saveMember;
+  }
+
+  /**
+   * 특정 멤버 조회
+   */
+  async findOneByMember(email: string): Promise<Members> {
+    const member = await this.findOne({
+      select: ['email', 'memberName', 'password', 'jwtToken'],
+      where: { email },
+    });
+    return member;
+  }
+
+  /**
+   * Refresh Token 저장
+   */
+  async setCurrentRefreshToken(refreshToken: string, email: string) {
+    await this.createQueryBuilder()
+      .update(Members)
+      .set({ jwtToken: refreshToken })
+      .where('email = :email', { email: email })
+      .execute();
+  }
+
+  /**
+   * refresh Token 검사
+   */
+  async getUserIfRefreshTokenMatches(refreshToken: string, email: string) {
+    const member = await this.findOneByMember(email);
+
+    if (refreshToken == member.jwtToken) {
+      return member;
+    } else {
+      throw new BadRequestException(AUTH_EXCEPTION.AUTH_CODE_NOT_EXIST_TOKEN);
+    }
   }
 }
