@@ -54,7 +54,11 @@ export class MembersRepository extends Repository<Members> {
    * Refresh Token 저장
    */
   async setCurrentRefreshToken(refreshToken: string, email: string) {
-    await this.update(email, { jwtToken: refreshToken });
+    await this.createQueryBuilder()
+      .update(Members)
+      .set({ jwtToken: refreshToken })
+      .where('email = :email', { email: email })
+      .execute();
   }
 
   /**
