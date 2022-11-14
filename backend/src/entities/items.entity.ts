@@ -36,9 +36,9 @@ export class Items extends BaseEntitty {
   @Column({
     name: 'item_price',
     comment: 'item 가격',
-    type: 'varchar',
+    type: 'int',
   })
-  itemPrice: string;
+  itemPrice: number;
 
   @Column({
     name: 'item_content',
