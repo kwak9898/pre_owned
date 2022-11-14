@@ -26,4 +26,19 @@ export class ItemsService {
 
     return this.itemsRepository.createItem(createItemDto, member);
   }
+
+  /**
+   * 중고 거래 물품 상세 조회
+   */
+  async findOneByItem(itemId: number): Promise<ItemListResponseDto> {
+    const queryBuilder = await this.itemsRepository
+      .createQueryBuilder('item')
+      .innerJoinAndSelect('item.member', 'member')
+      .where('item.itemId = :itemId', { itemId })
+      .getOne();
+
+    const dto = new ItemListResponseDto(queryBuilder);
+    dto.memberName = queryBuilder.member.memberName;
+    return dto;
+  }
 }
