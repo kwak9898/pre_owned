@@ -1,5 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntitty } from '../domains/base/base.entity';
+import { Comment } from './comment.entity';
+import { Members } from './members.entity';
 
 @Entity('items')
 export class Items extends BaseEntitty {
@@ -51,4 +60,12 @@ export class Items extends BaseEntitty {
     type: 'varchar',
   })
   type: string;
+
+  @ManyToOne(() => Members, (member) => member.itemList)
+  @JoinColumn({ name: 'member_id', referencedColumnName: 'memberId' })
+  member: Members;
+
+  @OneToMany(() => Comment, (comment) => comment.item)
+  @JoinColumn({ name: 'comment_id', referencedColumnName: 'commentId' })
+  commentList: Comment[];
 }

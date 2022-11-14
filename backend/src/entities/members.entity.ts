@@ -1,6 +1,14 @@
 import { BaseEntitty } from 'src/domains/base/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Comment } from './comment.entity';
+import { Items } from './items.entity';
 
 @Entity('members')
 export class Members extends BaseEntitty {
@@ -20,7 +28,7 @@ export class Members extends BaseEntitty {
   email: string;
 
   @Column({
-    name: 'mamber_name',
+    name: 'member_name',
     comment: 'member의 이름',
     type: 'varchar',
     unique: true,
@@ -42,6 +50,14 @@ export class Members extends BaseEntitty {
     nullable: true,
   })
   jwtToken?: string;
+
+  @OneToMany(() => Items, (item) => item.member)
+  @JoinColumn({ name: 'item_id', referencedColumnName: 'itemId' })
+  itemList: Items[];
+
+  @OneToMany(() => Comment, (comment) => comment.member)
+  @JoinColumn({ name: 'comment_id', referencedColumnName: 'commentId' })
+  commentList: Comment[];
 
   async hashPassword(password: string): Promise<void> {
     this.password = await bcrypt.hash(password, 12);
