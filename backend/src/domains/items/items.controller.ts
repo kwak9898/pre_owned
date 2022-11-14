@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/createItem.dto';
 import { Members } from '../../entities/members.entity';
@@ -19,5 +19,16 @@ export class ItemsController {
     @CurrentMember() member: Members,
   ): Promise<ItemListResponseDto> {
     return this.itemsService.createItem(createItemDto, member);
+  }
+
+  /**
+   * 중고 거래 물품 상세 조회
+   */
+  @Get('/:itemId')
+  findOneByItem(
+    @Param('itemId') itemId: number,
+    @CurrentMember() member: Members,
+  ): Promise<ItemListResponseDto> {
+    return this.itemsService.findOneByItem(itemId);
   }
 }
