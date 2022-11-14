@@ -25,13 +25,4 @@ export class MembersController {
   ): Promise<Members> {
     return this.membersService.createMember(createMemberDto);
   }
-
-  /**
-   * 특정 멤버 조회
-   */
-  @Public()
-  @Get(':email')
-  findOneMember(@Param('email') email: string): Promise<Members> {
-    return this.membersService.findOneMember(email);
-  }
 }
