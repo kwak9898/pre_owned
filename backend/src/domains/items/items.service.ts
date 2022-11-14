@@ -6,6 +6,9 @@ import { Members } from '../../entities/members.entity';
 import { MEMBER_EXCEPTION } from '../../exception/memberErrorCode';
 import { ItemListResponseDto } from './dto/itemListResponse.dto';
 import { ITEM_EXCEPTION } from '../../exception/itemErrorCode';
+import { MyPaginationQuery } from '../base/paginationQuery';
+import { paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { MyPagination } from '../base/paginationResponse';
 
 @Injectable()
 export class ItemsService {
@@ -26,6 +29,25 @@ export class ItemsService {
     }
 
     return this.itemsRepository.createItem(createItemDto, member);
+  }
+
+  /**
+   * 중고 거래 물품 전체 조회
+   */
+  async getAllByItems(
+    options: MyPaginationQuery,
+  ): Promise<Pagination<ItemListResponseDto>> {
+    const queryBuilder = await this.itemsRepository.createQueryBuilder('item');
+    queryBuilder.innerJoinAndSelect('item.member', 'member');
+    const result = await paginate(queryBuilder, options);
+
+    const data = result.items.map((item) => {
+      const dto = new ItemListResponseDto(item);
+      dto.memberName = item.member.memberName;
+      return dto;
+    });
+
+    return new MyPagination<ItemListResponseDto>(data, result.meta);
   }
 
   /**
