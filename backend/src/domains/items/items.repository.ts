@@ -3,6 +3,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Items } from '../../entities/items.entity';
 import { CreateItemDto } from './dto/createItem.dto';
 import { Members } from '../../entities/members.entity';
+import { ItemListResponseDto } from './dto/itemListResponse.dto';
 
 @Injectable()
 export class ItemsRepository extends Repository<Items> {
@@ -16,7 +17,7 @@ export class ItemsRepository extends Repository<Items> {
   async createItem(
     createItemDto: CreateItemDto,
     member: Members,
-  ): Promise<Items> {
+  ): Promise<ItemListResponseDto> {
     const { title, itemName, itemPrice, itemContent, type, area } =
       createItemDto;
 
@@ -30,6 +31,10 @@ export class ItemsRepository extends Repository<Items> {
       member,
     });
 
-    return await this.save(item);
+    const saveItem = await this.save(item);
+
+    const dto = new ItemListResponseDto(saveItem);
+    dto.memberName = saveItem.member.memberName;
+    return dto;
   }
 }

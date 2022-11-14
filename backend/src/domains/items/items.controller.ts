@@ -1,9 +1,9 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/createItem.dto';
-import { Items } from '../../entities/items.entity';
 import { Members } from '../../entities/members.entity';
 import { CurrentMember } from '../../decorators/currentMember.decorator';
+import { ItemListResponseDto } from './dto/itemListResponse.dto';
 
 @Controller('items')
 export class ItemsController {
@@ -17,7 +17,7 @@ export class ItemsController {
   createItem(
     @Body() createItemDto: CreateItemDto,
     @CurrentMember() member: Members,
-  ): Promise<Items> {
+  ): Promise<ItemListResponseDto> {
     return this.itemsService.createItem(createItemDto, member);
   }
 }
