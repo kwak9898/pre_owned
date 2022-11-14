@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MembersController } from './domains/members/members.controller';
-import { MembersService } from './domains/members/members.service';
 import { MembersModule } from './domains/members/members.module';
 import * as Joi from '@hapi/joi';
 import { ConfigModule } from '@nestjs/config';
@@ -10,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './domains/guard/jwtAuth.guard';
 import { AuthModule } from './domains/auth/auth.module';
+import { ItemsModule } from './domains/items/items.module';
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { AuthModule } from './domains/auth/auth.module';
     }),
     MembersModule,
     AuthModule,
+    ItemsModule,
     DatabaseModule,
   ],
   controllers: [AppController, MembersController],
