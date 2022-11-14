@@ -44,4 +44,11 @@ export class Items extends BaseEntitty {
     type: 'varchar',
   })
   area: string;
+
+  @Column({
+    name: 'item_type',
+    comment: '중고 거래 물품 타입',
+    type: 'varchar',
+  })
+  type: string;
 }
