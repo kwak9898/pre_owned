@@ -5,6 +5,7 @@ import { CreateItemDto } from './dto/createItem.dto';
 import { Members } from '../../entities/members.entity';
 import { MEMBER_EXCEPTION } from '../../exception/memberErrorCode';
 import { ItemListResponseDto } from './dto/itemListResponse.dto';
+import { ITEM_EXCEPTION } from '../../exception/itemErrorCode';
 
 @Injectable()
 export class ItemsService {
@@ -36,6 +37,10 @@ export class ItemsService {
       .innerJoinAndSelect('item.member', 'member')
       .where('item.itemId = :itemId', { itemId })
       .getOne();
+
+    if (queryBuilder === null) {
+      throw new NotFoundException(ITEM_EXCEPTION.ITEM_CODE_NOT_FOUND);
+    }
 
     const dto = new ItemListResponseDto(queryBuilder);
     dto.memberName = queryBuilder.member.memberName;
