@@ -4,6 +4,8 @@ import { Members } from 'src/entities/members.entity';
 import { MEMBER_EXCEPTION } from 'src/exception/memberErrorCode';
 import { createMemberDto } from './dto/createMember.dto';
 import { MembersRepository } from './members.repository';
+import { UpdateMemberDto } from './dto/updateMember.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class MembersService {
@@ -22,12 +24,30 @@ export class MembersService {
   /**
    * 특정 멤버 조회
    */
-  findOneMember(email: string): Promise<Members> {
+  findOneByMember(email: string): Promise<Members> {
     if (!email) {
       throw new NotFoundException(MEMBER_EXCEPTION.MEMBER_CODE_NOT_FOUND);
     }
 
     return this.membersRepository.findOneByMember(email);
+  }
+
+  /**
+   * 특정 멤버 정보 수정
+   */
+  async updateMember(updateMemberDto: UpdateMemberDto): Promise<Members> {
+    const { email, password, memberName } = updateMemberDto;
+    const member = await this.findOneByMember(email);
+
+    if (password) {
+      member.password = await bcrypt.hash(password, 12);
+    }
+
+    if (memberName) {
+      member.memberName = memberName;
+    }
+
+    return await this.membersRepository.save(member);
   }
 
   /**
