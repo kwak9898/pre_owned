@@ -61,7 +61,7 @@ export class ItemsController {
   @Patch('/:memberId')
   updateByItem(
     @Param('memberId') memberId: number,
-    updateItemDto: UpdateItemDto,
+    @Body() updateItemDto: UpdateItemDto,
   ): Promise<Items> {
     return this.itemsService.updateByItem(memberId, updateItemDto);
   }

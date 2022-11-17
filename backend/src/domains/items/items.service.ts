@@ -82,6 +82,15 @@ export class ItemsService {
       updateItemDto;
     const item = await this.findOneByItem(itemId);
 
-    return await this.itemsRepository.save(item);
+    if (item) {
+      item.title = title;
+      item.itemName = itemName;
+      item.itemPrice = itemPrice;
+      item.itemContent = itemContent;
+      item.area = area;
+      item.type = type;
+    }
+
+    return this.itemsRepository.save(item);
   }
 }

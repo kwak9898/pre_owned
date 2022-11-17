@@ -40,6 +40,7 @@ export class MembersService {
     updateMemberDto: UpdateMemberDto,
   ): Promise<Members> {
     const { password, memberName } = updateMemberDto;
+    console.log(updateMemberDto);
     const member = await this.membersRepository.findOne({
       where: { memberId },
     });
