@@ -61,6 +61,14 @@ export class MembersService {
   }
 
   /**
+   * 특정 멤버 삭제
+   */
+  async deleteByMember(email: string): Promise<void> {
+    const member = await this.findOneByMember(email);
+    await this.membersRepository.delete(member.memberId);
+  }
+
+  /**
    * Refresh Token 저장
    */
   async setCurrentRefreshToken(refreshToken: string, email: string) {

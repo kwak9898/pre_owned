@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   Param,
   Patch,
@@ -44,5 +45,13 @@ export class MembersController {
     );
 
     return { email: member.email, memberName: member.memberName };
+  }
+
+  /**
+   * 특정 멤버 삭제
+   */
+  @Delete('/:email')
+  deleteByMember(@Param('email') email: string): Promise<void> {
+    return this.membersService.deleteByMember(email);
   }
 }
