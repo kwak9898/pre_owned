@@ -21,6 +21,8 @@ export class ItemsRepository extends Repository<Items> {
     const { title, itemName, itemPrice, itemContent, type, area } =
       createItemDto;
 
+    console.log(createItemDto);
+
     const item = this.create({
       title,
       itemName,

@@ -9,6 +9,8 @@ import { ITEM_EXCEPTION } from '../../exception/itemErrorCode';
 import { MyPaginationQuery } from '../base/paginationQuery';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { MyPagination } from '../base/paginationResponse';
+import { UpdateItemDto } from './dto/updateItem.dto';
+import { Items } from '../../entities/items.entity';
 
 @Injectable()
 export class ItemsService {
@@ -67,5 +69,28 @@ export class ItemsService {
     const dto = new ItemListResponseDto(queryBuilder);
     dto.memberName = queryBuilder.member.memberName;
     return dto;
+  }
+
+  /**
+   * 중고 거래 물품 정보 수정
+   */
+  async updateByItem(
+    itemId: number,
+    updateItemDto: UpdateItemDto,
+  ): Promise<Items> {
+    const { title, itemName, itemPrice, itemContent, area, type } =
+      updateItemDto;
+    const item = await this.findOneByItem(itemId);
+
+    if (item) {
+      item.title = title;
+      item.itemName = itemName;
+      item.itemPrice = itemPrice;
+      item.itemContent = itemContent;
+      item.area = area;
+      item.type = type;
+    }
+
+    return this.itemsRepository.save(item);
   }
 }

@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -14,6 +15,8 @@ import { CurrentMember } from '../../decorators/currentMember.decorator';
 import { ItemListResponseDto } from './dto/itemListResponse.dto';
 import { MyPaginationQuery } from '../base/paginationQuery';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { UpdateItemDto } from './dto/updateItem.dto';
+import { Items } from '../../entities/items.entity';
 
 @Controller('items')
 export class ItemsController {
@@ -50,5 +53,16 @@ export class ItemsController {
     @CurrentMember() member: Members,
   ): Promise<ItemListResponseDto> {
     return this.itemsService.findOneByItem(itemId);
+  }
+
+  /**
+   * 중고 거래 물품 정보 수정
+   */
+  @Patch('/:memberId')
+  updateByItem(
+    @Param('memberId') memberId: number,
+    @Body() updateItemDto: UpdateItemDto,
+  ): Promise<Items> {
+    return this.itemsService.updateByItem(memberId, updateItemDto);
   }
 }
