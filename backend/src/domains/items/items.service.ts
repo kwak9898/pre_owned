@@ -40,7 +40,9 @@ export class ItemsService {
     options: MyPaginationQuery,
   ): Promise<Pagination<ItemListResponseDto>> {
     const queryBuilder = await this.itemsRepository.createQueryBuilder('item');
-    queryBuilder.innerJoinAndSelect('item.member', 'member');
+    queryBuilder
+      .innerJoinAndSelect('item.member', 'member')
+      .orderBy('item.createdAt', 'DESC');
     const result = await paginate(queryBuilder, options);
 
     const data = result.items.map((item) => {
