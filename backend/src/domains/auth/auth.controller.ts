@@ -43,7 +43,7 @@ export class AuthController {
    */
   @Get('profile/:email')
   async profile(@Param('email') email: string): Promise<ProfileResponseDto> {
-    const member = await this.membersService.findOneMember(email);
+    const member = await this.membersService.findOneByMember(email);
     const memberName = member.memberName;
 
     return { email, memberName };

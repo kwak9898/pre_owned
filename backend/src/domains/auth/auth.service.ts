@@ -43,7 +43,7 @@ export class AuthService {
    * 비밀번호 유효성 검사
    */
   async validateMember(email: string, plainTextPassword: string) {
-    const member = await this.membersService.findOneMember(email);
+    const member = await this.membersService.findOneByMember(email);
     await this.verifyPassword(plainTextPassword, member.password);
     const { password, ...result } = member;
     return result;
