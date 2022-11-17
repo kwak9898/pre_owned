@@ -35,9 +35,18 @@ export class MembersService {
   /**
    * 특정 멤버 정보 수정
    */
-  async updateMember(updateMemberDto: UpdateMemberDto): Promise<Members> {
-    const { email, password, memberName } = updateMemberDto;
-    const member = await this.findOneByMember(email);
+  async updateMember(
+    memberId: number,
+    updateMemberDto: UpdateMemberDto,
+  ): Promise<Members> {
+    const { password, memberName } = updateMemberDto;
+    const member = await this.membersRepository.findOne({
+      where: { memberId },
+    });
+
+    if (!member) {
+      throw new NotFoundException(MEMBER_EXCEPTION.MEMBER_CODE_NOT_FOUND);
+    }
 
     if (password) {
       member.password = await bcrypt.hash(password, 12);
