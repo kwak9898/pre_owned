@@ -50,8 +50,8 @@ export class MembersController {
   /**
    * 특정 멤버 삭제
    */
-  @Delete('/:email')
-  deleteByMember(@Param('email') email: string): Promise<void> {
-    return this.membersService.deleteByMember(email);
+  @Delete('/:memberId')
+  deleteByMember(@Param('memberId') memberId: number): Promise<void> {
+    return this.membersService.deleteByMember(memberId);
   }
 }
