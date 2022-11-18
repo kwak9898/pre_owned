@@ -51,11 +51,13 @@ export class Members extends BaseEntitty {
   })
   jwtToken?: string;
 
-  @OneToMany(() => Items, (item) => item.member)
+  @OneToMany(() => Items, (item) => item.member, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'item_id', referencedColumnName: 'itemId' })
   itemList: Items[];
 
-  @OneToMany(() => Comment, (comment) => comment.member)
+  @OneToMany(() => Comment, (comment) => comment.member, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'comment_id', referencedColumnName: 'commentId' })
   commentList: Comment[];
 

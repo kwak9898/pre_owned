@@ -24,8 +24,10 @@ export class MembersService {
   /**
    * 특정 멤버 조회
    */
-  findOneByMember(email: string): Promise<Members> {
-    if (!email) {
+  async findOneByMember(email: string): Promise<Members> {
+    const member = await this.membersRepository.findOne({ where: { email } });
+
+    if (!member) {
       throw new NotFoundException(MEMBER_EXCEPTION.MEMBER_CODE_NOT_FOUND);
     }
 
@@ -40,7 +42,6 @@ export class MembersService {
     updateMemberDto: UpdateMemberDto,
   ): Promise<Members> {
     const { password, memberName } = updateMemberDto;
-    console.log(updateMemberDto);
     const member = await this.membersRepository.findOne({
       where: { memberId },
     });
@@ -58,6 +59,16 @@ export class MembersService {
     }
 
     return await this.membersRepository.save(member);
+  }
+
+  /**
+   * 특정 멤버 삭제
+   */
+  async deleteByMember(memberId: number): Promise<void> {
+    const member = await this.membersRepository.findOne({
+      where: { memberId },
+    });
+    await this.membersRepository.delete(member.memberId);
   }
 
   /**
