@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -58,11 +59,19 @@ export class ItemsController {
   /**
    * 중고 거래 물품 정보 수정
    */
-  @Patch('/:memberId')
+  @Patch('/:itemId')
   updateByItem(
-    @Param('memberId') memberId: number,
+    @Param('itemId') itemId: number,
     @Body() updateItemDto: UpdateItemDto,
   ): Promise<Items> {
-    return this.itemsService.updateByItem(memberId, updateItemDto);
+    return this.itemsService.updateByItem(itemId, updateItemDto);
+  }
+
+  /**
+   * 중고 거래 물품 삭제
+   */
+  @Delete('/:itemId')
+  deleteByItem(@Param('itemId') itemId: number): Promise<void> {
+    return this.itemsService.deleteByItem(itemId);
   }
 }
