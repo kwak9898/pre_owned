@@ -95,4 +95,17 @@ export class ItemsService {
 
     return this.itemsRepository.save(item);
   }
+
+  /**
+   * 중고 거래 물품 삭제
+   */
+  async deleteByItem(itemId: number): Promise<void> {
+    const item = await this.findOneByItem(itemId);
+
+    if (!item) {
+      throw new NotFoundException(ITEM_EXCEPTION.ITEM_CODE_NOT_FOUND);
+    }
+
+    await this.itemsRepository.delete(item.itemId);
+  }
 }
