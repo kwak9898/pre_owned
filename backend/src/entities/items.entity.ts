@@ -61,11 +61,13 @@ export class Items extends BaseEntitty {
   })
   type: string;
 
-  @ManyToOne(() => Members, (member) => member.itemList)
+  @ManyToOne(() => Members, (member) => member.itemList, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'member_id', referencedColumnName: 'memberId' })
   member: Members;
 
-  @OneToMany(() => Comment, (comment) => comment.item)
+  @OneToMany(() => Comment, (comment) => comment.item, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'comment_id', referencedColumnName: 'commentId' })
   commentList: Comment[];
 }
