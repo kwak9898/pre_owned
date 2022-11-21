@@ -17,7 +17,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(row, id) in list" : key="id">
+      <tr v-for="(row, id) in list" :key="id">
         <td>{{ row.id }}</td>
         <td><a v-on:click="fnView(`${row.idx}`)">{{row.title}}</a> </td>
         <td>{{ row.name }}</td>
