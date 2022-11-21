@@ -1,4 +1,4 @@
-# vue-3-and-typescript
+# frontend
 
 ## Project setup
 ```
