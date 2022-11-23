@@ -2,15 +2,18 @@
   <PageHeader/> <!-- 헤더 컴포넌트 -->
   <router-view/>  <!-- 페이지 이동이 표시될 곳 -->
   <PageFooter/> <!-- 푸터 컴포넌트 -->
+  <ProductList/>
 </template>
 
 <script>
 import PageHeader from '@/components/PageHeader'
 import PageFooter from '@/components/PageFooter'
+import ProductList from "@/views/production/ProductList";
 
 export default {
   name: 'App',
   components: {
+    ProductList,
     PageFooter,
     PageHeader
   }
