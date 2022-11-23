@@ -2,10 +2,10 @@ import axios from "axios"; // axios 호출
 
 export default {
     methods: {
-        async $api(url, data, methods) {
+        async $api(url, method,data) {
             return (
                 await axios({
-                    methods,
+                    methods: method,
                     url,
                     data,
                 }).catch((error) => {
@@ -14,8 +14,7 @@ export default {
             ).data;
         },
         $currencyFormat(value, format = "#,###") {
-            // 가격,등 세자리마다 ,을 찍어주는 메소드
-            if (value == 0 || value == null) return 0;
+            if (value === 0 || value == null) return 0;
 
             let currency = format.substring(0, 1);
             if (currency === "$" || currency === "₩") {
@@ -27,7 +26,7 @@ export default {
             let groupingSeparator = ",";
             let maxFractionDigits = 0;
             let decimalSeparator = ".";
-            if (format.indexOf(".") == -1) {
+            if (format.indexOf(".") === -1) {
                 groupingSeparator = ",";
             } else {
                 if (format.indexOf(",") < format.indexOf(".")) {
@@ -59,7 +58,7 @@ export default {
 
             if (
                 maxFractionDigits > 0 &&
-                format.substring(format.length - 1, format.length) == "0"
+                format.substring(format.length - 1, format.length) === "0"
             ) {
                 v = String(parseFloat(v).toFixed(maxFractionDigits));
             }
