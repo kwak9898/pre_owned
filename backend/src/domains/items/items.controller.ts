@@ -18,6 +18,7 @@ import { MyPaginationQuery } from '../base/paginationQuery';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { UpdateItemDto } from './dto/updateItem.dto';
 import { Items } from '../../entities/items.entity';
+import { Public } from '../../decorators/skipAuth.decorator';
 
 @Controller('items')
 export class ItemsController {
@@ -38,6 +39,7 @@ export class ItemsController {
   /**
    * 중고 거래 물품 전체 조회
    */
+  @Public()
   @Get('')
   getAllByItems(
     @Query() query: MyPaginationQuery,
