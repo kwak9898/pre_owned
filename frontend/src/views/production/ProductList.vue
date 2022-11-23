@@ -20,7 +20,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.item_Name }}</h5>
               <p class="card-text">
-                {{ getCurrencyFormat(item.item_price) }}원
+                {{ item.item_price }}원
               </p>
             </div>
           </div>
@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  name: 'ProductList',
   data() {
     return {
       itemList: [],
@@ -43,7 +44,7 @@ export default {
     // created() {
     // //   this.getProductList(); // created 단계에서 getProductList를 실행시켜 data 미리 호출
     // },
-    mounted() {
+    created() {
     this.getList();
     },
   methods: {
@@ -52,23 +53,21 @@ export default {
     },
 
     async getList() {
-      this.$axios
-          .get(this.$serverUrl + "/items", {})
+      this.itemList = await this.$api('/items?page=', "GET", {})
           .then((res) => {
-            this.itemList = res.data;
-            console.log("items : ", this.itemList);
-          }).catch((error) => {
-            console.log(error);
-        if (error.message.indexOf('Network Error') > -1) {
-          alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.');
-        }
-      })
-    },
-
+            console.log("DATA : ", res.data)
+          })
+          .catch((error) => {
+            if (error.message.indexOf('Network Error') > -1) {
+              alert('네트워크가 원활하지 않습니다.\n잠시후 다시 시도해 주세요.');
+            }
+            console.log("왜~ : ", error)
+          });
+      },
     goToDetail(product_id) {
       // 제품 이미지 클릭시 product_id를 받아 제품 상세페이지로 router되도록 설정
       this.$router.push({ path: "/detail", query: { product_id: product_id } }); // path중 /detail이 들어가면 product_id를 파라미터로 받아 라우터 시킴
-    },
+      },
     },
   }
 </script>
